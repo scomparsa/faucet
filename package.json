@@ -4,9 +4,6 @@
   "private": true,
   "dependencies": {
     "@metamask/detect-provider": "^2.0.0",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
     "@truffle/contract": "^4.6.20",
     "assert": "^2.0.0",
     "bulma": "^0.9.4",
@@ -49,6 +46,9 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
     "buffer": "^6.0.3",
     "process": "^0.11.10",
     "react-app-rewired": "^2.2.1"
