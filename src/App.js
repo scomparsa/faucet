@@ -7,6 +7,7 @@ import "./App.css";
 function App() {
   const [web3Api, setWeb3Api] = useState({
     provider: null,
+    isProviderLoaded: false,
     web3: null,
     contract: null,
   });
@@ -34,8 +35,10 @@ function App() {
           provider,
           contract,
           web3: new Web3(provider),
+          isProviderLoaded: true,
         });
       } else {
+        setWeb3Api({ ...web3Api, isProviderLoaded: true });
         console.error("Please, install Metamask.");
       }
     };
@@ -84,39 +87,43 @@ function App() {
   return (
     <div className="faucet-wrapper">
       <div className="faucet">
-        <div className="is-flex is-align-items-center">
-          <span>
-            <strong className="mr-2">Account:</strong>
-          </span>
-          {account ? (
-            <div>{account}</div>
-          ) : !web3Api.provider ? (
-            <>
-              <div className="notification is-warning is-size-6 is-rounded">
-                Wallet is not detected!{` `}
-                <a
-                  target="_blank"
-                  rel="noreferrer"
-                  href="https://docs.metamask.io"
-                >
-                  Install Metamask
-                </a>
-              </div>
-            </>
-          ) : (
-            <button
-              className="button is-small"
-              onClick={async () => {
-                const [account] = await web3Api.provider.request({
-                  method: "eth_requestAccounts",
-                });
-                setAccount(account);
-              }}
-            >
-              Connect Wallet
-            </button>
-          )}
-        </div>
+        {web3Api.isProviderLoaded ? (
+          <div className="is-flex is-align-items-center">
+            <span>
+              <strong className="mr-2">Account:</strong>
+            </span>
+            {account ? (
+              <div>{account}</div>
+            ) : !web3Api.provider ? (
+              <>
+                <div className="notification is-warning is-size-6 is-rounded">
+                  Wallet is not detected!{` `}
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href="https://docs.metamask.io"
+                  >
+                    Install Metamask
+                  </a>
+                </div>
+              </>
+            ) : (
+              <button
+                className="button is-small"
+                onClick={async () => {
+                  const [account] = await web3Api.provider.request({
+                    method: "eth_requestAccounts",
+                  });
+                  setAccount(account);
+                }}
+              >
+                Connect Wallet
+              </button>
+            )}
+          </div>
+        ) : (
+          <span>Looking for Web3...</span>
+        )}
         <div className="balance-view is-size-2 my-4">
           Current Balance: <strong>{balance}</strong> ETH
         </div>
