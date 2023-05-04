@@ -19,13 +19,17 @@ function App() {
     [shouldReload, reload]
   );
 
+  const setAccountListener = (provider) => {
+    provider.on("accountsChanged", ([account]) => setAccount(account));
+  };
+
   useEffect(() => {
     const loadProvider = async () => {
       const provider = await detectEthereumProvider();
       const contract = await loadContract("Faucet", provider);
 
       if (provider) {
-        provider.request({ method: "eth_requestAccounts" });
+        setAccountListener(provider);
         setWeb3Api({
           provider,
           contract,
