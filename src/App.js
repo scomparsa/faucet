@@ -15,6 +15,7 @@ function App() {
   const [account, setAccount] = useState(null);
   const [shouldReload, reload] = useState(false);
 
+  const canConnectToContract = account && web3Api.contract;
   const reloadEffect = useCallback(
     () => reload(!shouldReload),
     [shouldReload, reload]
@@ -22,6 +23,7 @@ function App() {
 
   const setAccountListener = (provider) => {
     provider.on("accountsChanged", (_) => window.location.reload());
+    provider.on("chainChanged", (_) => window.location.reload());
   };
 
   useEffect(() => {
@@ -38,7 +40,7 @@ function App() {
           isProviderLoaded: true,
         });
       } else {
-        setWeb3Api({ ...web3Api, isProviderLoaded: true });
+        setWeb3Api((api) => ({ ...api, isProviderLoaded: true }));
         console.error("Please, install Metamask.");
       }
     };
@@ -127,16 +129,19 @@ function App() {
         <div className="balance-view is-size-2 my-4">
           Current Balance: <strong>{balance}</strong> ETH
         </div>
+        {!canConnectToContract && (
+          <i className="is-block">Connect to Ganache</i>
+        )}
         <button
           className="button is-link mr-2"
-          disabled={!account}
+          disabled={!canConnectToContract}
           onClick={addFunds}
         >
           Donate 1eth
         </button>
         <button
           className="button is-primary"
-          disabled={!account || balance <= 0}
+          disabled={!canConnectToContract || balance <= 0}
           onClick={withdraw}
         >
           Withdraw 0.1eth
