@@ -20,7 +20,7 @@ function App() {
   );
 
   const setAccountListener = (provider) => {
-    provider.on("accountsChanged", ([account]) => setAccount(account));
+    provider.on("accountsChanged", (_) => window.location.reload());
   };
 
   useEffect(() => {
@@ -107,12 +107,16 @@ function App() {
         <div className="balance-view is-size-2 my-4">
           Current Balance: <strong>{balance}</strong> ETH
         </div>
-        <button className="button is-link mr-2" onClick={addFunds}>
+        <button
+          className="button is-link mr-2"
+          disabled={!account}
+          onClick={addFunds}
+        >
           Donate 1eth
         </button>
         <button
           className="button is-primary"
-          disabled={balance <= 0}
+          disabled={!account || balance <= 0}
           onClick={withdraw}
         >
           Withdraw 0.1eth

@@ -1,12 +1,12 @@
 {
   "files": {
     "main.css": "/faucet/static/css/main.646ea4ea.css",
-    "main.js": "/faucet/static/js/main.6ab16a0e.js",
+    "main.js": "/faucet/static/js/main.d6ed06a8.js",
     "static/js/27.501643ed.chunk.js": "/faucet/static/js/27.501643ed.chunk.js",
     "index.html": "/faucet/index.html"
   },
   "entrypoints": [
     "static/css/main.646ea4ea.css",
-    "static/js/main.6ab16a0e.js"
+    "static/js/main.d6ed06a8.js"
   ]
 }
