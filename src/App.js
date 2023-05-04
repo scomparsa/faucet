@@ -12,6 +12,12 @@ function App() {
   });
   const [balance, setBalance] = useState(null);
   const [account, setAccount] = useState(null);
+  const [shouldReload, reload] = useState(false);
+
+  const reloadEffect = useCallback(
+    () => reload(!shouldReload),
+    [shouldReload, reload]
+  );
 
   useEffect(() => {
     const loadProvider = async () => {
@@ -41,7 +47,7 @@ function App() {
     };
 
     web3Api.contract && loadBalance();
-  }, [web3Api]);
+  }, [web3Api, shouldReload]);
 
   useEffect(() => {
     const getAccount = async () => {
@@ -58,7 +64,9 @@ function App() {
       from: account,
       value: web3.utils.toWei("1", "ether"),
     });
-  }, [web3Api, account]);
+
+    reloadEffect();
+  }, [web3Api, account, reloadEffect]);
 
   return (
     <div className="faucet-wrapper">
