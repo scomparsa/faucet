@@ -68,6 +68,15 @@ function App() {
     reloadEffect();
   }, [web3Api, account, reloadEffect]);
 
+  const withdraw = useCallback(async () => {
+    const { contract, web3 } = web3Api;
+    const withdrawAmount = web3.utils.toWei("0.1", "ether");
+
+    await contract.withdraw(withdrawAmount, { from: account });
+
+    reloadEffect();
+  }, [web3Api, account, reloadEffect]);
+
   return (
     <div className="faucet-wrapper">
       <div className="faucet">
@@ -97,7 +106,13 @@ function App() {
         <button className="button is-link mr-2" onClick={addFunds}>
           Donate 1eth
         </button>
-        <button className="button is-primary">Withdraw</button>
+        <button
+          className="button is-primary"
+          disabled={balance <= 0}
+          onClick={withdraw}
+        >
+          Withdraw 0.1eth
+        </button>
       </div>
     </div>
   );
